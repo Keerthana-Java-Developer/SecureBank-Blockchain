@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Transfer receipt | SecureBank</title><link rel="stylesheet" href="/css/style.css">
+<style>
+.receipt{max-width:720px;margin:32px auto;background:#fff;border:1px solid #e5eaf2;border-radius:20px;padding:32px;box-shadow:0 18px 45px rgba(16,37,63,.08)}
+.receipt-head{display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:1px dashed #d5deea;padding-bottom:22px}
+.receipt-row{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid #eef2f7}
+.receipt-row span{color:#64748b}.receipt-row strong{text-align:right;overflow-wrap:anywhere}
+@media print{.nav,.no-print{display:none!important}.receipt{box-shadow:none;border:0;margin:0 auto}}
+</style></head><body><nav th:replace="~{fragments :: nav(${user})}"></nav>
+<main class="wrap"><section class="receipt"><div class="receipt-head"><div><p class="eyebrow" style="color:#246bfe">SECUREBANK • DEMO RECEIPT</p><h2>Transfer receipt</h2><p class="muted">Keep this reference for your project records.</p></div><span class="pill" th:text="${transaction.status}">COMPLETED</span></div>
+<div style="text-align:center;padding:26px 0"><p class="muted">Transfer amount</p><h1 style="font-size:38px;margin:4px 0">₹<span th:text="${#numbers.formatDecimal(transaction.amount,1,2)}">500.00</span></h1><p class="muted">Virtual funds only — no real money was moved.</p></div>
+<div class="receipt-row"><span>Transaction reference</span><strong th:text="${'SB-' + transaction.id}">SB-1</strong></div>
+<div class="receipt-row"><span>Date and time</span><strong th:text="${#temporals.format(transaction.createdAt,'dd MMM yyyy, HH:mm:ss')}">Date</strong></div>
+<div class="receipt-row"><span>From account</span><strong th:text="${transaction.fromAccount}">From</strong></div>
+<div class="receipt-row"><span>To account</span><strong th:text="${transaction.toAccount}">To</strong></div>
+<div class="receipt-row"><span>Ledger hash</span><strong style="font-size:11px" th:text="${transaction.transactionHash}">hash</strong></div>
+<div class="receipt-row"><span>Previous hash</span><strong style="font-size:11px" th:text="${transaction.previousHash}">hash</strong></div>
+<div class="no-print" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px"><button class="btn" onclick="window.print()" type="button">Download / Print receipt</button><a class="btn secondary" href="/ledger">Back to transactions</a></div>
+</section></main></body></html>

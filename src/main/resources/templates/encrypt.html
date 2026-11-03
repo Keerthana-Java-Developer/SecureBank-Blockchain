@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>RSA Encryption | SecureBank</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3f9;
+            padding: 25px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #00000012;
+        }
+
+        h1 {
+            color: #163b70;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 90px;
+            box-sizing: border-box;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: 2px solid #174b8a;
+            outline-offset: 1px;
+        }
+
+        button {
+            background: #174b8a;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #103765;
+        }
+
+        .result {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        .error {
+            color: #b00020;
+            background: #fff1f2;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .section {
+            margin-top: 25px;
+        }
+
+        a {
+            color: #174b8a;
+        }
+
+        .note {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>RSA Encryption &amp; Decryption</h1>
+
+    <p class="note">
+        Educational demonstration only. Do not enter real banking
+        details, passwords, or other sensitive information.
+    </p>
+
+    <div class="section">
+
+        <h2>Encrypt Message</h2>
+
+        <form th:action="@{/encrypt}" method="post">
+
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <label for="message">Message to encrypt</label>
+
+            <textarea id="message"
+                      name="message"
+                      maxlength="190"
+                      placeholder="Enter a short message"
+                      required
+                      th:text="${message}"></textarea>
+
+            <button type="submit">Encrypt Message</button>
+
+        </form>
+
+    </div>
+
+    <div class="section" th:if="${encryptedMessage != null}">
+
+        <h3>Encrypted Message</h3>
+
+        <div class="result"
+             th:text="${encryptedMessage}"></div>
+
+        <h2>Decrypt Message</h2>
+
+        <form th:action="@{/decrypt}" method="post">
+
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <label for="encryptedMessage">
+                Encrypted message to decrypt
+            </label>
+
+            <textarea id="encryptedMessage"
+                      name="encryptedMessage"
+                      required
+                      th:text="${encryptedMessage}"></textarea>
+
+            <button type="submit">Decrypt Message</button>
+
+        </form>
+
+    </div>
+
+    <div class="section" th:if="${decryptedMessage != null}">
+
+        <h3>Decrypted Message</h3>
+
+        <div class="result"
+             th:text="${decryptedMessage}"></div>
+
+    </div>
+
+    <p class="error"
+       th:if="${error != null}"
+       th:text="${error}"></p>
+
+    <hr>
+
+    <p>
+        <a th:href="@{/rsa-keys}">View RSA Keys</a>
+    </p>
+
+    <p>
+        <a th:href="@{/}">Back to Home</a>
+    </p>
+
+</div>
+
+</body>
+</html>

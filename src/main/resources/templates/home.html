@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SecureBank | Welcome</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<nav th:replace="~{fragments :: nav(${user})}"></nav>
+
+<main class="wrap">
+
+    <section class="hero">
+        <div>
+            <div class="eyebrow">Banking • protected • transparent</div>
+
+            <h1>Bank smarter.<br>Move money securely.</h1>
+
+            <p>
+                A secure banking demo built with Java and Spring Boot.
+                Manage your account and explore hash-linked transaction
+                records in one place.
+            </p>
+
+            <a class="btn" href="/signup">Get started →</a>
+
+            <a class="btn secondary"
+               style="margin-left: 8px;"
+               href="/login">Sign in</a>
+        </div>
+
+        <div class="hero-art">
+            <div class="tiny">SECUREBANK • MEMBER</div>
+            <div class="chip"></div>
+            <div class="cardnum">•••• &nbsp; •••• &nbsp; •••• &nbsp; 2048</div>
+            <div class="tiny" style="margin-top: 17px;">
+                SECURE DIGITAL BANKING
+            </div>
+        </div>
+    </section>
+
+    <div class="sectionhead">
+        <h2>Built around safer banking</h2>
+        <span class="muted">Simple. Clear. Secure.</span>
+    </div>
+
+    <div class="features">
+
+        <article class="feature">
+            <div class="stat icon">✓</div>
+            <h3>Protected sign-in</h3>
+            <p>Passwords are stored as BCrypt hashes, not plain text.</p>
+        </article>
+
+        <article class="feature">
+            <div class="stat icon">↗</div>
+            <h3>Bank transfers</h3>
+            <p>Transfer between registered demo accounts with balance checks.</p>
+        </article>
+
+        <article class="feature">
+            <div class="stat icon">⌁</div>
+            <h3>Hash-linked ledger</h3>
+            <p>Transactions link to the previous transaction hash to demonstrate integrity.</p>
+        </article>
+
+        <article class="feature">
+            <div class="stat icon">🔐</div>
+            <h3>RSA Encryption</h3>
+            <p>Encrypt and decrypt messages using RSA public and private keys.</p>
+            <a class="btn" href="/encrypt">Open RSA Tool</a>
+        </article>
+
+    </div>
+
+</main>
+
+<div class="footer">
+    Educational demo only · Do not use real banking credentials or real money.
+</div>
+
+</body>
+</html>

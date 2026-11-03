@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Transfer | SecureBank</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<nav th:replace="~{fragments :: nav(${user})}"></nav>
+
+<main class="wrap">
+
+    <div class="sectionhead">
+        <div>
+            <p class="eyebrow" style="color:#246bfe">PAYMENTS</p>
+            <h2>Transfer money</h2>
+            <p class="muted">
+                Send demo funds to another registered SecureBank account.
+            </p>
+        </div>
+
+        <a href="/dashboard" class="btn secondary">
+            ← Dashboard
+        </a>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1.1fr .9fr">
+
+        <form class="panel"
+              method="post"
+              action="/transfer"
+              style="margin-top:0">
+
+            <!-- CSRF protection token -->
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <h2>Transfer details</h2>
+
+            <!-- Error message -->
+            <div th:if="${error}"
+                 class="alert"
+                 th:text="${error}">
+            </div>
+
+            <!-- Success message -->
+            <div th:if="${success}"
+                 class="alert success"
+                 th:text="${success}">
+            </div>
+
+            <!-- Sender account -->
+            <div class="field">
+
+                <label for="yourAccount">Your account</label>
+
+                <input
+                        id="yourAccount"
+                        th:value="${account.accountNumber}"
+                        readonly>
+
+            </div>
+
+            <!-- Recipient account -->
+            <div class="field">
+
+                <label for="recipientAccount">
+                    Recipient account number
+                </label>
+
+                <input
+                        id="recipientAccount"
+                        name="recipientAccount"
+                        type="text"
+                        required
+                        minlength="10"
+                        maxlength="16"
+                        pattern="[0-9]{10,16}"
+                        inputmode="numeric"
+                        placeholder="Enter recipient account number">
+
+            </div>
+
+            <!-- Transfer amount -->
+            <div class="field">
+
+                <label for="amount">Amount (₹)</label>
+
+                <input
+                        id="amount"
+                        name="amount"
+                        type="number"
+                        min="0.01"
+                        max="100000"
+                        step="0.01"
+                        required
+                        placeholder="500.00">
+
+            </div>
+
+            <!-- OTP -->
+            <div class="field">
+
+                <label for="enteredOtp">6-digit demo OTP</label>
+
+                <input
+                        id="enteredOtp"
+                        name="enteredOtp"
+                        type="text"
+                        inputmode="numeric"
+                        pattern="[0-9]{6}"
+                        minlength="6"
+                        maxlength="6"
+                        required
+                        autocomplete="one-time-code"
+                        placeholder="Enter generated OTP">
+
+            </div>
+
+            <p class="muted">
+                Generate your demo OTP before submitting the transfer.
+            </p>
+
+            <a href="/otp" class="btn secondary full">
+                Generate OTP →
+            </a>
+
+            <button class="btn full" type="submit">
+                Verify OTP &amp; Transfer →
+            </button>
+
+            <p class="foot">
+                Per-transfer limit: ₹25,000. Daily limit: ₹50,000.
+                Demo accounts only. No real money or bank account is connected.
+            </p>
+
+        </form>
+
+        <!-- Balance panel -->
+        <aside class="panel"
+               style="margin-top:0;background:#10253f;color:white">
+
+            <div class="eyebrow">ACCOUNT BALANCE</div>
+
+            <h2 style="font-size:32px;margin-top:14px">
+                ₹<span th:text="${#numbers.formatDecimal(account.balance,1,2)}">
+                    1000.00
+                </span>
+            </h2>
+
+            <p style="color:#d2deec;line-height:1.8">
+                A completed demo transfer updates both registered
+                account balances and records a hash-linked transaction.
+            </p>
+
+            <div class="pill">
+                Demo integrity checks
+            </div>
+            <div style="margin-top:22px;padding:16px;border:1px solid rgba(255,255,255,.2);border-radius:12px">
+                <p style="margin:0 0 8px;color:#d2deec">Daily transfer limit</p>
+                <h3 style="margin:0 0 6px">₹50,000.00</h3>
+                <p style="margin:0;color:#d2deec;font-size:13px">Used today: ₹<span th:text="${#numbers.formatDecimal(dailySent,1,2)}">0.00</span></p>
+                <p style="margin:6px 0 0;color:#d2deec;font-size:13px">Remaining: ₹<span th:text="${#numbers.formatDecimal(dailyRemaining,1,2)}">50000.00</span></p>
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+</body>
+</html>

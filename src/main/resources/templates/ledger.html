@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>Transaction history | SecureBank</title>
+ <link rel="stylesheet" href="/css/style.css">
+ <style>
+  .hash-value {
+   display: inline-block;
+   max-width: 180px;
+   overflow-wrap: anywhere;
+   word-break: break-all;
+   font-size: 11px;
+   color: #246bfe;
+   background: #f1f5ff;
+   padding: 6px;
+   border-radius: 6px;
+  }
+ </style>
+</head>
+<body>
+
+<nav th:replace="~{fragments :: nav(${user})}"></nav>
+
+<main class="wrap">
+
+ <div class="sectionhead">
+  <div>
+   <p class="eyebrow" style="color:#246bfe">ACCOUNT ACTIVITY</p>
+   <h2>Transaction history</h2>
+   <p class="muted">Search, filter and download receipts for your demo transactions.</p>
+  </div>
+
+  <span th:if="${ledgerValid}" class="pill">Ledger verified</span>
+  <span th:unless="${ledgerValid}" class="pill"
+        style="background:#fff0f0;color:#b42318">
+            Integrity check failed
+        </span>
+ </div>
+
+ <form class="panel" method="get" action="/ledger" style="margin-bottom:18px">
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+
+   <div class="field">
+    <label>Search account / transaction ID</label>
+    <input name="search" th:value="${search}" placeholder="Search">
+   </div>
+
+   <div class="field">
+    <label>Type</label>
+    <select name="type">
+     <option value="ALL" th:selected="${type == 'ALL'}">All types</option>
+     <option value="CREDIT" th:selected="${type == 'CREDIT'}">Credit</option>
+     <option value="DEBIT" th:selected="${type == 'DEBIT'}">Debit</option>
+    </select>
+   </div>
+
+   <div class="field">
+    <label>Status</label>
+    <select name="status">
+     <option value="ALL" th:selected="${status == 'ALL'}">All statuses</option>
+     <option value="COMPLETED" th:selected="${status == 'COMPLETED'}">Completed</option>
+    </select>
+   </div>
+
+   <div class="field">
+    <label>From date</label>
+    <input type="date" name="fromDate" th:value="${fromDate}">
+   </div>
+
+   <div class="field">
+    <label>To date</label>
+    <input type="date" name="toDate" th:value="${toDate}">
+   </div>
+
+   <div class="field">
+    <label>Minimum ₹</label>
+    <input type="number" min="0" step=".01" name="minAmount"
+           th:value="${minAmount}" placeholder="0.00">
+   </div>
+
+   <div class="field">
+    <label>Maximum ₹</label>
+    <input type="number" min="0" step=".01" name="maxAmount"
+           th:value="${maxAmount}" placeholder="Any">
+   </div>
+
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+   <button class="btn" type="submit">Apply filters</button>
+   <a class="btn secondary" href="/ledger">Clear filters</a>
+  </div>
+ </form>
+
+ <div class="panel">
+  <div class="sectionhead">
+   <div>
+    <h3>Transactions</h3>
+    <p class="muted" th:text="${totalResults + ' matching records'}">
+     0 matching records
+    </p>
+   </div>
+  </div>
+
+  <div class="tablewrap">
+   <table>
+    <thead>
+    <tr>
+     <th>Reference</th>
+     <th>Direction</th>
+     <th>Counterparty</th>
+     <th>Amount</th>
+     <th>Date</th>
+     <th>Status</th>
+     <th>Previous Hash</th>
+     <th>Transaction Hash</th>
+     <th>Receipt</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="tx : ${transactions}">
+
+     <td th:text="${'SB-' + tx.id}">SB-1</td>
+
+     <td>
+                        <span class="pill"
+                              th:text="${tx.fromAccount == account.accountNumber ? 'DEBIT' : 'CREDIT'}">
+                            DEBIT
+                        </span>
+     </td>
+
+     <td th:text="${tx.fromAccount == account.accountNumber ? tx.toAccount : tx.fromAccount}">
+      Account
+     </td>
+
+     <td>
+      <strong>
+       ₹ <span th:text="${#numbers.formatDecimal(tx.amount,1,2)}">100.00</span>
+      </strong>
+     </td>
+
+     <td th:text="${#temporals.format(tx.createdAt,'dd MMM yyyy HH:mm')}">
+      Date
+     </td>
+
+     <td th:text="${tx.status}">COMPLETED</td>
+
+     <td>
+      <code class="hash-value"
+            th:text="${tx.previousHash}"
+            th:title="${tx.previousHash}">
+       Previous hash
+      </code>
+     </td>
+
+     <td>
+      <code class="hash-value"
+            th:text="${tx.transactionHash}"
+            th:title="${tx.transactionHash}">
+       Transaction hash
+      </code>
+     </td>
+
+     <td>
+      <a class="btn secondary"
+         th:href="@{/receipt/{id}(id=${tx.id})}">
+       View receipt
+      </a>
+     </td>
+
+    </tr>
+
+    <tr th:if="${#lists.isEmpty(transactions)}">
+     <td colspan="9" class="muted">
+      No transactions match these filters.
+     </td>
+    </tr>
+
+    </tbody>
+   </table>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px">
+            <span class="muted"
+                  th:text="${'Page ' + page + ' of ' + totalPages}">
+                Page 1 of 1
+            </span>
+
+   <div style="display:flex;gap:8px">
+    <a class="btn secondary"
+       th:if="${page > 1}"
+       th:href="@{/ledger(page=${page-1},search=${search},type=${type},status=${status},fromDate=${fromDate},toDate=${toDate},minAmount=${minAmount},maxAmount=${maxAmount})}">
+     Previous
+    </a>
+
+    <a class="btn secondary"
+       th:if="${page < totalPages}"
+       th:href="@{/ledger(page=${page+1},search=${search},type=${type},status=${status},fromDate=${fromDate},toDate=${toDate},minAmount=${minAmount},maxAmount=${maxAmount})}">
+     Next
+    </a>
+   </div>
+  </div>
+ </div>
+
+ <p class="muted" style="font-size:13px;line-height:1.8">
+  Educational demo: the hash-linked ledger illustrates integrity checks
+  but is not a distributed blockchain or a production banking ledger.
+ </p>
+
+</main>
+</body>
+</html>

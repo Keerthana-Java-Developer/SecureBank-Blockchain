@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Security | SecureBank</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<nav th:replace="~{fragments :: nav(${user})}"></nav>
+
+<main class="wrap">
+
+    <div class="sectionhead">
+        <div>
+            <p class="eyebrow" style="color:#246bfe">
+                SECURITY CENTER
+            </p>
+
+            <h2>Security &amp; PKI</h2>
+
+            <p class="muted">
+                Security features available in this Java banking demo.
+            </p>
+        </div>
+    </div>
+
+    <div class="features">
+
+        <article class="feature">
+            <div class="stat icon">🔐</div>
+
+            <h3>Password Hashing</h3>
+
+            <p>
+                BCrypt password hashing helps protect stored passwords.
+                Original passwords should never be stored as plain text.
+            </p>
+        </article>
+
+        <article class="feature">
+            <div class="stat icon">#</div>
+
+            <h3>SHA-256 Ledger Integrity</h3>
+
+            <p>
+                Transactions store a SHA-256 hash and a reference
+                to the previous transaction hash.
+                Ledger verification must also recompute hashes
+                to detect changes to transaction data.
+            </p>
+        </article>
+
+        <article class="feature">
+            <div class="stat icon">✓</div>
+
+            <h3>Transfer Validation</h3>
+
+            <p>
+                The application checks transfer amounts, recipient
+                details, self-transfers and available balance.
+            </p>
+        </article>
+
+        <article class="feature">
+            <div class="stat icon">🛡️</div>
+
+            <h3>CSRF Protection</h3>
+
+            <p>
+                Spring Security CSRF protection is enabled.
+                Every POST form must include a valid CSRF token.
+            </p>
+        </article>
+
+        <article class="feature">
+            <div class="stat icon">🔑</div>
+
+            <h3>RSA &amp; Private Keys</h3>
+
+            <p>
+                RSA key generation is demonstrated in this project.
+                Private keys must be protected and must not be
+                exposed in webpages or logs.
+            </p>
+        </article>
+
+    </div>
+
+    <div class="panel">
+
+        <h2>Project Security Notes</h2>
+
+        <p th:if="${message != null}"
+           th:text="${message}"
+           style="line-height:1.8">
+        </p>
+
+        <p class="muted" style="line-height:1.8">
+            This is an educational banking application, not a production
+            banking system. Production use requires additional controls,
+            including proper authorization, secure session management,
+            OTP expiry and attempt limits, protected private-key storage,
+            and comprehensive audit logging.
+        </p>
+
+        <p class="muted" style="line-height:1.8">
+            Hash-linked transactions demonstrate tamper-evident ledger
+            concepts. They do not, by themselves, create a distributed
+            blockchain network.
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+</html>
+```

@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSA Key Generation</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #00000015;
+        }
+
+        h1 {
+            color: #163b70;
+        }
+
+        .key {
+            background: #f4f6f9;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+            line-height: 1.6;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-top: 25px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #1769aa;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .warning {
+            color: #a33;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .success {
+            color: #237447;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>RSA Key Generation</h1>
+
+    <p class="success">
+        RSA public and private keys have been generated.
+    </p>
+
+    <h2>Public Key</h2>
+    <div class="key" th:text="${publicKey}">
+        Public key will appear here.
+    </div>
+
+    <h2>Private Key</h2>
+    <p class="warning">
+        Private key is hidden for security.
+        Do not expose private keys in a real banking application.
+    </p>
+
+    <p class="warning">
+        Note: Hiding the private key on this page does not secure
+        the key in backend storage. The backend must protect it too.
+    </p>
+
+    <a th:href="@{/}">Back to Home</a>
+
+</div>
+</body>
+</html>

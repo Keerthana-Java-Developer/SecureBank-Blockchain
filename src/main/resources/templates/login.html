@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Sign in | SecureBank</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<nav th:replace="~{fragments :: nav(null)}"></nav>
+
+<main class="authlayout">
+
+    <section class="authside">
+
+        <div class="eyebrow">Welcome back</div>
+
+        <h1>
+            Your money.<br>
+            Your control.
+        </h1>
+
+        <p>
+            Sign in to review your account, make a demo transfer
+            and verify your transaction ledger.
+        </p>
+
+        <p>
+            ● Passwords protected with BCrypt<br>
+            ● Balance validation before transfer<br>
+            ● SHA-256 transaction hash links
+        </p>
+
+    </section>
+
+    <section class="authmain">
+
+        <form class="authcard" method="post" action="/login">
+
+            <!-- CSRF protection token -->
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <h2>Sign in</h2>
+
+            <p class="muted">
+                Enter your SecureBank account details.
+            </p>
+
+            <!-- Display login errors -->
+            <div th:if="${error}"
+                 class="alert"
+                 th:text="${error}">
+            </div>
+
+            <!-- Username -->
+            <div class="field">
+
+                <label for="username">Username</label>
+
+                <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        autocomplete="username"
+                        required
+                        maxlength="60"
+                        th:value="${username}">
+
+            </div>
+
+            <!-- Password -->
+            <div class="field">
+
+                <label for="password">Password</label>
+
+                <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        autocomplete="current-password"
+                        required>
+
+            </div>
+
+            <!-- Submit -->
+            <button class="btn full" type="submit">
+                Sign in securely →
+            </button>
+
+            <p class="foot">
+                New here?
+
+                <a href="/signup"
+                   style="color:#246bfe;font-weight:700">
+                    Create an account
+                </a>
+            </p>
+
+            <p class="foot">
+                OTP delivery is not enabled in this starter.
+            </p>
+
+        </form>
+
+    </section>
+
+</main>
+
+</body>
+</html>

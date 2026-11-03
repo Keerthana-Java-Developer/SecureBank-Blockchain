@@ -1,0 +1,7 @@
+MySQL setup (optional; H2 works by default)
+1. Start MySQL Server.
+2. Run: CREATE DATABASE secure_banking;
+3. Set environment variables DB_URL, DB_DRIVER, DB_USER and DB_PASSWORD as described in README.md.
+4. Start the Spring Boot app. JPA creates/updates the tables.
+
+Default demo database is H2 file mode, no external database setup required.

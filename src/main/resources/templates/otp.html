@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>OTP Verification | SecureBank</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .otp-container {
+            max-width: 650px;
+            margin: 40px auto;
+        }
+
+        .otp-code {
+            padding: 18px;
+            margin: 16px 0;
+            border-radius: 10px;
+            background: #edf4ff;
+            color: #174b8a;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: 8px;
+            text-align: center;
+        }
+
+        .demo-note {
+            padding: 12px;
+            border-radius: 8px;
+            background: #fff5df;
+            color: #805500;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav th:replace="~{fragments :: nav(${user})}"></nav>
+
+<main class="wrap otp-container">
+
+    <div class="sectionhead">
+        <div>
+            <p class="eyebrow" style="color:#246bfe">
+                ACCOUNT SECURITY
+            </p>
+
+            <h2>OTP verification</h2>
+
+            <p class="muted">
+                Generate a demo OTP for your test transfer.
+            </p>
+        </div>
+
+        <a href="/transfer" class="btn secondary">
+            ← Back to transfer
+        </a>
+    </div>
+
+    <div class="panel">
+
+        <!-- Success message -->
+        <div th:if="${message}"
+             class="alert success"
+             th:text="${message}">
+        </div>
+
+        <!-- Error message -->
+        <div th:if="${error}"
+             class="alert"
+             th:text="${error}">
+        </div>
+
+        <!-- Generate OTP -->
+        <h3>Step 1: Generate OTP</h3>
+
+        <form method="post" action="/otp/generate">
+
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <button class="btn full" type="submit">
+                Generate demo OTP
+            </button>
+
+        </form>
+
+        <!-- Display generated demo OTP -->
+        <div th:if="${demoOtp != null}">
+
+            <p class="muted">
+                Your generated demo OTP:
+            </p>
+
+            <div class="otp-code"
+                 th:text="${demoOtp}">
+                123456
+            </div>
+
+        </div>
+
+        <hr style="margin:25px 0;border:0;border-top:1px solid #e5e7eb">
+
+        <!-- Verify OTP -->
+        <h3>Step 2: Verify OTP</h3>
+
+        <form method="post" action="/otp/verify">
+
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <div class="field">
+
+                <label for="enteredOtp">
+                    Enter your 6-digit OTP
+                </label>
+
+                <input
+                        id="enteredOtp"
+                        name="enteredOtp"
+                        type="text"
+                        inputmode="numeric"
+                        pattern="[0-9]{6}"
+                        minlength="6"
+                        maxlength="6"
+                        autocomplete="one-time-code"
+                        placeholder="Enter OTP"
+                        required>
+
+            </div>
+
+            <button class="btn full" type="submit">
+                Verify OTP
+            </button>
+
+        </form>
+
+        <div class="demo-note" style="margin-top:20px">
+            <strong>Educational demo only:</strong>
+            This OTP is generated locally and displayed on the page.
+            It is not delivered by SMS or email and is not suitable
+            for real banking transactions.
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>
