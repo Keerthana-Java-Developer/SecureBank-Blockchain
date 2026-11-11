@@ -4,11 +4,11 @@
 
 **A Java and Spring Boot banking demonstration focused on secure authentication and transaction integrity concepts.**
 
-[Source Code](https://github.com/keerthanavinoth2003-maker/SecureBank-Blockchain) · [Developer Portfolio](https://keerthanavinoth2003-maker.github.io/keerthana-portfolio/)
+[Live Application](https://securebank-blockchain.onrender.com/) · [Source Code](https://github.com/keerthanavinoth2003-maker/SecureBank-Blockchain) · [Developer Portfolio](https://keerthanavinoth2003-maker.github.io/keerthana-portfolio/)
 
 </div>
 
-> **Project status:** Local portfolio demonstration. No public live deployment is currently available. This application is not connected to real banking or payment networks.
+> **Project status:** Deployed portfolio demonstration. This application is not connected to real banking or payment networks.
 
 ## Overview
 
